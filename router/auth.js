@@ -4,6 +4,7 @@ const Usuario = require('../models/Usuario');
 const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
+
 // Crear un nuevo usuario - POST
 router.post('/', [
 
