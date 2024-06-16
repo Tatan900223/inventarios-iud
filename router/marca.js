@@ -5,9 +5,8 @@ const { validationResult, check } = require('express-validator');
 
 // Crear una nueva marca - POST
 router.post('/', [
-    check('nombre', 'invalid.nombre').not().isEmpty(),
-    check('estado', 'invalid.estado').not().isEmpty(),
-
+    check('nombre', 'El nombre de la marca es obligatorio').not().isEmpty(),
+    // Agrega aquí más validaciones si son necesarias
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
