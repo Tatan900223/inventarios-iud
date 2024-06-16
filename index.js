@@ -8,6 +8,7 @@ getConnection();
 app.use(express.json())
 
 app.use('/usuario', require('./router/usuario'));
+app.use('/marca', require('./router/marca'));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
