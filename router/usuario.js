@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const { validationResult, check } = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 // Crear un nuevo usuario - POST
 router.post('/', [
@@ -17,7 +18,7 @@ router.post('/', [
     try {
 
         const errors = validationResult(req);
-        if (!errors.isEmpty());
+        if (!errors.isEmpty())
         return res.status(400).json({ mensaje: errors.array() });
 
         const existeUsuario = await Usuario.findOne({ email: req.body.email });
@@ -29,7 +30,11 @@ router.post('/', [
         usuario.nombre = req.body.nombre;
         usuario.email = req.body.email;
         usuario.estado = req.body.estado;
+
+        const salt = bcrypt.genSaltSync();
+        const password = bcrypt.hashSync(req.body.password, salt);
         usuario.password = req.body.password;
+        
         usuario.rol = req.body.rol;
         usuario.fechaCreacion = new Date();
         usuario.fechaActualizacion = new Date();
