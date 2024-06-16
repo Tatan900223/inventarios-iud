@@ -33,7 +33,7 @@ router.post('/', [
 
         const salt = bcrypt.genSaltSync();
         const password = bcrypt.hashSync(req.body.password, salt);
-        usuario.password = req.body.password;
+        usuario.password = password;
         
         usuario.rol = req.body.rol;
         usuario.fechaCreacion = new Date();
