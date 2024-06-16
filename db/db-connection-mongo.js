@@ -4,7 +4,7 @@ const getConnection = async () => {
 
     try {
 
-        const url = 'mongodb://adminiud:<password>@ac-ejoqbfv-shard-00-00.qbplsal.mongodb.net:27017,ac-ejoqbfv-shard-00-01.qbplsal.mongodb.net:27017,ac-ejoqbfv-shard-00-02.qbplsal.mongodb.net:27017/?ssl=true&replicaSet=atlas-e3vo6q-shard-0&authSource=admin&retryWrites=true&w=majority&appName=AtlasCluster'
+        const url = 'mongodb://adminiud:U1b1WNgU9sNSZetH@ac-ejoqbfv-shard-00-00.qbplsal.mongodb.net:27017,ac-ejoqbfv-shard-00-01.qbplsal.mongodb.net:27017,ac-ejoqbfv-shard-00-02.qbplsal.mongodb.net:27017/inventarios-iud?ssl=true&replicaSet=atlas-e3vo6q-shard-0&authSource=admin&retryWrites=true&w=majority&appName=AtlasCluster'
 
         await mongoose.connect(url);
 
@@ -13,7 +13,10 @@ const getConnection = async () => {
     } catch (error) {
         console.log(error);
     }
+}
 
+module.exports = {
+    getConnection,
 }
 
 
