@@ -9,9 +9,9 @@ router.post('/', [
 
     check('nombre', 'invalid.nombre').not().isEmpty(),
     check('email', 'invalid.email').isEmail(),
-    check('estado', 'invalid.estado').isIn('Activo', 'Inactivo'),
+    check('estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
     check('password', 'invalid.password').not().isEmpty(),
-    check('rol', 'invalid.rol').isIn('Administrador', 'Docente'),
+    check('rol', 'invalid.rol').isIn(['Administrador', 'Docente']),
 
 ], async (req, res) => {
 
