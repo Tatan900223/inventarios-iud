@@ -3,9 +3,10 @@ const router = express.Router();
 const Usuario = require('../models/Usuario');
 const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const { validarJWT } = require('../middleware/validar-jwt');
 
 // Crear un nuevo usuario - POST
-router.post('/', [
+router.post('/',[validarJWT], [
 
     check('nombre', 'invalid.nombre').not().isEmpty(),
     check('email', 'invalid.email').isEmail(),
@@ -52,7 +53,7 @@ router.post('/', [
 
 
 // Listar todos los usuarios
-router.get('/', async (req, res) => {
+router.get('/',[validarJWT], async (req, res) => {
     try {
         const usuarios = await Usuario.find();
         res.send(usuarios);
