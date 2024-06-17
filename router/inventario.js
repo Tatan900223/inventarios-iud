@@ -1,17 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const Usuario = require('../models/Usuario');
+const Inventario = require('../models/Inventario');
 const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
-// Crear un nuevo usuario - POST
+// Crear un nuevo inventario - POST
 router.post('/', [
 
-    check('nombre', 'invalid.nombre').not().isEmpty(),
-    check('email', 'invalid.email').isEmail(),
-    check('estado', 'invalid.estado').isIn(['Activo', 'Inactivo']),
-    check('password', 'invalid.password').not().isEmpty(),
-    check('rol', 'invalid.rol').isIn(['Administrador', 'Docente']),
+    check('serial', 'invalid.serial').not().isEmpty(),
+    check('modelo', 'invalid.modelo').not().isEmpty(),
+    check('descripcion', 'invalid.descripcion').not().isEmpty(),
+    check('foto', 'invalid.foto').not().isEmpty(),
+    check('color', 'invalid.color').not().isEmpty(),
+    check('fechaCompra', 'invalid.fechaCompra').not().isEmpty(),
+    check('precio', 'invalid.precio').not().isEmpty(),
+    check('usuario', 'invalid.usuario').not().isEmpty(),
+    check('marca', 'invalid.marca').not().isEmpty(),
+    check('estadoEquipo', 'invalid.estadoEquipo').not().isEmpty(),
+    check('tipoEquipo', 'invalid.tipoEquipo').not().isEmpty(),
+   
 
 ], async (req, res) => {
 
@@ -21,44 +28,48 @@ router.post('/', [
         if (!errors.isEmpty())
         return res.status(400).json({ mensaje: errors.array() });
 
-        const existeUsuario = await Usuario.findOne({ email: req.body.email });
-        if (existeUsuario) {
-            return res.status(400).send('Email ya existe');
+        const existeinventarioPorSerial = await Inventario.findOne({ serial: req.body.serial });
+        if (existeinventarioPorSerial) {
+            return res.status(400).send('Ya existe el serial para otro equipo');
         }
 
-        let usuario = new Usuario();
-        usuario.nombre = req.body.nombre;
-        usuario.email = req.body.email;
-        usuario.estado = req.body.estado;
+        let inventario = new Inventario();
+        inventario.serial = req.body.serial
+        inventario.modelo = req.body.modelo
+        inventario.descripcion = req.body.descripcion
+        inventario.foto = req.body.foto
+        inventario.color = req.body.color
+        inventario.fechaCompra = req.body.fechaCompra
+        inventario.precio = req.body.precio
+        inventario.usuario = req.body.usuario
+        inventario.marca = req.body.marca
+        inventario.estadoEquipo = req.body.estadoEquipo
+        inventario.tipoEquipo = req.body.tipoEquipo
+        inventario.fechaCreacion = new Date();
+        inventario.fechaActualizacion = new Date();
 
-        const salt = bcrypt.genSaltSync();
-        const password = bcrypt.hashSync(req.body.password, salt);
-        usuario.password = password;
-        
-        usuario.rol = req.body.rol;
-        usuario.fechaCreacion = new Date();
-        usuario.fechaActualizacion = new Date();
-
-        usuario = await usuario.save()
-        res.send(usuario);
+        inventario = await inventario.save()
+        res.send(inventario);
 
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('ocurrió un error al crear el usuario')
+        res.status(500).send('ocurrió un error al crear el inventario')
     }
 
 });
 
 
-// Listar todos los usuarios
+// Listar todos los inventarios
 router.get('/', async (req, res) => {
     try {
-        const usuarios = await Usuario.find();
-        res.send(usuarios);
+        const inventarios = await inventario.find();
+        res.send(inventarios);
     
     } catch (error) {
         console.log(error);
+        res.status(500).send('ocurrió un error al listar el inventario')
+
     }
 });
 
