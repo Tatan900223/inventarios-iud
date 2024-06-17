@@ -3,6 +3,7 @@ const router = express.Router();
 const Usuario = require('../models/Usuario');
 const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const { generarJWT } = require('../helpers/jwt');
 
 
 // Crear un nuevo usuario - POST
@@ -28,10 +29,13 @@ router.post('/', [
             if (!esIgual) {
                 return res.status(400).json({ mensaje:'User not Found'});
             }
+            //Generar TOKEN de AUTH
+            const token = generarJWT(usuario);
+
 
             res.json({
                 _id: usuario._id, nombre: usuario.nombre,
-                rol: usuario.rol, email: usuario.email
+                rol: usuario.rol, email: usuario.email, access_token: token
             })
 
     } catch (error) {
