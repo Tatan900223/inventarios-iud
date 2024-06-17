@@ -63,7 +63,20 @@ router.post('/', [
 // Listar todos los inventarios
 router.get('/', async (req, res) => {
     try {
-        const inventarios = await inventario.find();
+        const inventarios = await Inventario.find().populate([
+            {
+            path: 'usuario', select: 'nombre email estado'
+            },
+            {
+                path: 'marca', select: 'nombre estado'
+            },
+            {
+                path: 'estadoEquipo', select: 'nombre estado'
+            },
+            {
+                path: 'tipoEquipo', select: 'nombre estado'
+            }
+        ]);
         res.send(inventarios);
     
     } catch (error) {
